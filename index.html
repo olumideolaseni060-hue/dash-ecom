@@ -1,0 +1,3492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DashCampaigns — Performance Design for Ecom Brands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --bg2: #141414;
+      --bg3: #1a1a1a;
+      --white: #f2f2f0;
+      --muted: #6b6b68;
+      --border: rgba(255, 255, 255, 0.08);
+      --border2: rgba(255, 255, 255, 0.12);
+      --blue: #4f9cf9;
+      --yellow: #f5c842;
+      --violet: #a78bfa;
+      --blue-bg: rgba(79, 156, 249, 0.12);
+      --yellow-bg: rgba(245, 200, 66, 0.12);
+      --violet-bg: rgba(167, 139, 250, 0.12);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(14, 14, 14, 0.92);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--blue);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-cta {
+      background: var(--white);
+      color: var(--bg);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.85;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 100px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 36px;
+    }
+
+    .hero-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+    }
+
+    .hero h1 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.5rem, 7vw, 7rem);
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .hero-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+      letter-spacing: -0.03em;
+      padding: 4px 20px;
+      border-radius: 100px;
+      line-height: 1.2;
+    }
+
+    .pill-blue {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid rgba(79, 156, 249, 0.25);
+    }
+
+    .pill-yellow {
+      background: var(--yellow-bg);
+      color: var(--yellow);
+      border: 1px solid rgba(245, 200, 66, 0.25);
+    }
+
+    .pill-violet {
+      background: var(--violet-bg);
+      color: var(--violet);
+      border: 1px solid rgba(167, 139, 250, 0.25);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 72px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--bg);
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.85;
+    }
+
+    .btn-ghost {
+      color: var(--muted);
+      padding: 14px 20px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-ghost:hover {
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* rating bar */
+    .hero-social {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .rating-faces {
+      display: flex;
+    }
+
+    .rating-face {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -10px;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rating-face:first-child {
+      margin-left: 0;
+    }
+
+    .rf1 {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .rf2 {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+    }
+
+    .rf3 {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .rf4 {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+    }
+
+    .rating-text {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .rating-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* ─── MARQUEE / TRUSTED ─── */
+    .marquee-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 0;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 22s linear infinite;
+      white-space: nowrap;
+      gap: 0;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 32px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .marquee-sep {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border2);
+      flex-shrink: 0;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    /* ─── SECTIONS ─── */
+    .section {
+      padding: 100px 48px;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 500px;
+    }
+
+    /* ─── WORK / CREATIVES ─── */
+    .work-section {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .work-header-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: end;
+      margin-bottom: 64px;
+    }
+
+    /* Product rows */
+    .product-row {
+      margin-bottom: 80px;
+    }
+
+    .product-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .product-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .meta-num {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta-name {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      color: var(--white);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 100px;
+    }
+
+    .meta-cat {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cat-blue {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid rgba(79, 156, 249, 0.2);
+    }
+
+    .cat-violet {
+      background: var(--violet-bg);
+      color: var(--violet);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+    }
+
+    .cat-yellow {
+      background: var(--yellow-bg);
+      color: var(--yellow);
+      border: 1px solid rgba(245, 200, 66, 0.2);
+    }
+
+    .cat-green {
+      background: rgba(74, 222, 128, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+
+    .cat-orange {
+      background: rgba(251, 146, 60, 0.1);
+      color: #fb923c;
+      border: 1px solid rgba(251, 146, 60, 0.2);
+    }
+
+    .ads-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .ad-frame {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--bg2);
+    }
+
+    .ad-frame:hover .ad-overlay {
+      opacity: 1;
+    }
+
+    .ad-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(79, 156, 249, 0.06);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .ad-chip {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(14, 14, 14, 0.85);
+      backdrop-filter: blur(12px);
+      color: var(--white);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      z-index: 10;
+      border: 1px solid var(--border);
+    }
+
+    .ad-plat {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      z-index: 10;
+    }
+
+    .plat-blue {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid rgba(79, 156, 249, 0.3);
+    }
+
+    .plat-violet {
+      background: var(--violet-bg);
+      color: var(--violet);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+    }
+
+    .plat-yellow {
+      background: var(--yellow-bg);
+      color: var(--yellow);
+      border: 1px solid rgba(245, 200, 66, 0.3);
+    }
+
+    /* ════════════════════════════════
+   AD CREATIVE DESIGNS (10 total)
+════════════════════════════════ */
+
+    /* ── AD 1: Mighty Patch – Dark urgency ── */
+    .ad1 {
+      aspect-ratio: 1;
+      background: #060c08;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad1-glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 200, 80, 0.14) 0%, transparent 68%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ad1-in {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 32px;
+    }
+
+    .ad1-ey {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #4ade80;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .ad1-patch {
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #e8f5e9, #c8e6c9);
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 60px rgba(0, 200, 80, 0.2), 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .ad1-patch::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .ad1-pt {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 0.65rem;
+      color: #1b5e35;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ad1-h {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .ad1-s {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.42);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .ad1-btn {
+      display: inline-block;
+      background: #4ade80;
+      color: #03200d;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 10px 22px;
+      border-radius: 100px;
+    }
+
+    /* ── AD 2: Mighty Patch – Before/After ── */
+    .ad2 {
+      aspect-ratio: 4/5;
+      background: #f7f3ee;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+
+    .ad2-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    .ad2-b {
+      background: #ece4db;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+      gap: 12px;
+    }
+
+    .ad2-a {
+      background: #111827;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+      gap: 12px;
+    }
+
+    .skin-b {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #d4947a, #c07a62);
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .skin-b::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 30px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #8b3535;
+      box-shadow: 0 0 0 4px rgba(139, 53, 53, 0.22);
+    }
+
+    .skin-a {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #e8c5a8, #deb896);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 0 0 2px rgba(74, 222, 128, 0.5);
+    }
+
+    .ba-lbl {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ad2-b .ba-lbl {
+      color: #8a7060;
+    }
+
+    .ad2-a .ba-lbl {
+      color: #4ade80;
+    }
+
+    .ad2-div {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #fff;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+
+    .ad2-vc {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #222;
+      z-index: 4;
+    }
+
+    .ad2-bot {
+      background: #111827;
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ad2-bt {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.82rem, 1.5vw, 1rem);
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .ad2-bb {
+      background: #4ade80;
+      color: #03200d;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 8px 15px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* ── AD 3: The Ordinary – Editorial split ── */
+    .ad3 {
+      aspect-ratio: 1;
+      background: #edeae2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .ad3-l {
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 22px;
+    }
+
+    .ad3-bot {
+      width: 54%;
+      margin: 0 auto 18px;
+      background: linear-gradient(180deg, #e2ddd5, #d0cac0);
+      border-radius: 3px 3px 6px 6px;
+      aspect-ratio: 1/3;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .ad3-cap {
+      position: absolute;
+      top: -8px;
+      width: 52%;
+      height: 11px;
+      background: #1a1a1a;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .ad3-bl {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 0.4rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2a2a2a;
+      text-align: center;
+      line-height: 1.9;
+    }
+
+    .ad3-h {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(0.95rem, 2vw, 1.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .ad3-s {
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.5;
+    }
+
+    .ad3-r {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+    }
+
+    .ad3-bdg {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad3-bdgt {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 0.4rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #111;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .ad3-ingr {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ad3-i {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.64rem;
+      color: #3a3a3a;
+    }
+
+    .ad3-id {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #111;
+      flex-shrink: 0;
+    }
+
+    .ad3-price {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.04em;
+      color: #111;
+    }
+
+    .ad3-buy {
+      display: block;
+      background: #111;
+      color: #edeae2;
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 9px;
+      border-radius: 100px;
+      margin-top: 7px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── AD 4: The Ordinary – Story ── */
+    .ad4 {
+      aspect-ratio: 9/16;
+      background: linear-gradient(160deg, #08080f 0%, #10102a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad4-glow {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.18) 0%, transparent 70%);
+      top: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .ad4-brand {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 26px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad4-bwrap {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 28px;
+    }
+
+    .ad4-bottle {
+      width: 68px;
+      background: linear-gradient(180deg, #d8d4cc, #c2bdb3);
+      border-radius: 3px 3px 8px 8px;
+      aspect-ratio: 1/3.5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      position: relative;
+    }
+
+    .ad4-bcap {
+      position: absolute;
+      top: -9px;
+      width: 70%;
+      height: 13px;
+      background: #444;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .ad4-blt {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 0.35rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #333;
+      text-align: center;
+      line-height: 1.9;
+    }
+
+    .ad4-shine {
+      position: absolute;
+      top: 8px;
+      right: -3px;
+      width: 9px;
+      height: 52px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
+      transform: skewX(-18deg);
+      border-radius: 3px;
+    }
+
+    .ad4-stars {
+      display: flex;
+      gap: 3px;
+      color: #f5c842;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad4-h {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.3rem, 2.8vw, 2rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad4-h span {
+      color: var(--violet);
+    }
+
+    .ad4-s {
+      font-size: 0.73rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 200px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad4-btn {
+      background: linear-gradient(135deg, var(--violet), #7c5cbf);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 12px 26px;
+      border-radius: 100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── AD 5: Stanley – Hero green ── */
+    .ad5 {
+      aspect-ratio: 1;
+      background: linear-gradient(155deg, #152019 0%, #0c1812 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad5-r {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .ad5-r1 {
+      width: 310px;
+      height: 310px;
+      top: -80px;
+      right: -80px;
+    }
+
+    .ad5-r2 {
+      width: 180px;
+      height: 180px;
+      bottom: 20px;
+      left: -40px;
+    }
+
+    .ad5-top {
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad5-br {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 7px;
+    }
+
+    .ad5-h {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.6rem, 3.5vw, 2.7rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      color: #fff;
+    }
+
+    .ad5-h em {
+      font-style: normal;
+      color: #4ade80;
+    }
+
+    .ad5-cup {
+      position: absolute;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-52%);
+      z-index: 2;
+      width: 72px;
+    }
+
+    .ad5-cb {
+      width: 72px;
+      aspect-ratio: 1/4.5;
+      background: linear-gradient(170deg, #7bc67e, #4caf50, #2e7d32);
+      border-radius: 6px 6px 9px 9px;
+      box-shadow: 4px 12px 32px rgba(0, 0, 0, 0.5), inset -3px 0 8px rgba(0, 0, 0, 0.18), inset 3px 0 8px rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .ad5-cb::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 15px;
+      background: linear-gradient(180deg, #3d6e40, #7bc67e);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .ad5-cb::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 9px;
+      width: 14px;
+      height: 62%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent);
+      border-radius: 0 0 50% 50%;
+    }
+
+    .ad5-bot {
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad5-fs {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .ad5-f {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.62);
+    }
+
+    .ad5-fd {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+    }
+
+    .ad5-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ad5-price {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.04em;
+    }
+
+    .ad5-btn {
+      background: #4ade80;
+      color: #0c1812;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 100px;
+    }
+
+    /* ── AD 6: Stanley – TikTok native ── */
+    .ad6 {
+      aspect-ratio: 9/16;
+      background: linear-gradient(200deg, #ddf0f7 0%, #c6e4f0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad6-stripe {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 37%;
+      background: #112033;
+      z-index: 1;
+    }
+
+    .ad6-cnt {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+
+    .ad6-hook {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: #112033;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .ad6-hook em {
+      font-style: normal;
+      color: #0090bb;
+    }
+
+    .ad6-cups {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 16px;
+    }
+
+    .ad6-c {
+      border-radius: 5px 5px 8px 8px;
+      aspect-ratio: 1/4.2;
+      position: relative;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    .ad6-c::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      width: 7px;
+      height: 56%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent);
+      border-radius: 50%;
+    }
+
+    .c1 {
+      width: 40px;
+      background: linear-gradient(170deg, #e57373, #c62828);
+    }
+
+    .c2 {
+      width: 46px;
+      background: linear-gradient(170deg, #7bc67e, #2e7d32);
+      margin-top: -8px;
+    }
+
+    .c3 {
+      width: 40px;
+      background: linear-gradient(170deg, #5c9bd6, #1a5fa8);
+    }
+
+    .ad6-bot {
+      width: 100%;
+    }
+
+    .ad6-sub {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.55);
+      text-align: center;
+      margin-bottom: 7px;
+    }
+
+    .ad6-big {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.2rem, 2.8vw, 1.9rem);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .ad6-row {
+      display: flex;
+      gap: 7px;
+    }
+
+    .ad6-btn {
+      flex: 1;
+      background: #fff;
+      color: #112033;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 11px;
+      border-radius: 100px;
+    }
+
+    .ad6-btn2 {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 11px 13px;
+      border-radius: 100px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    /* ── AD 7: Ninja – Dark grid ── */
+    .ad7 {
+      aspect-ratio: 1;
+      background: #060606;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .ad7-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+
+    .ad7-glow {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.2) 0%, transparent 70%);
+      top: 4%;
+      right: 4%;
+    }
+
+    .ad7-fryer {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-53%);
+      z-index: 2;
+    }
+
+    .ad7-body {
+      width: 128px;
+      height: 118px;
+      background: linear-gradient(145deg, #242424, #0d0d0d, #1b1b1b);
+      border-radius: 9px 9px 5px 5px;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+    }
+
+    .ad7-body::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #fb923c, #ef4444, #fb923c);
+      box-shadow: 0 0 18px rgba(251, 146, 60, 0.45);
+    }
+
+    .ad7-brand {
+      position: absolute;
+      bottom: 7px;
+      left: 10px;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 0.44rem;
+      letter-spacing: 0.12em;
+      color: #fb923c;
+      text-transform: uppercase;
+    }
+
+    .ad7-handle {
+      width: 46px;
+      height: 14px;
+      background: linear-gradient(90deg, #1e1e1e, #2a2a2a);
+      border-radius: 0 0 5px 5px;
+      margin: 0 auto;
+    }
+
+    .ad7-drawer {
+      width: 108px;
+      height: 34px;
+      background: linear-gradient(145deg, #161616, #0b0b0b);
+      border-radius: 0 0 5px 5px;
+      margin: 2px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad7-pull {
+      width: 26px;
+      height: 4px;
+      background: #2a2a2a;
+      border-radius: 2px;
+    }
+
+    .ad7-cnt {
+      position: relative;
+      z-index: 3;
+      padding: 24px 28px;
+      max-width: 53%;
+    }
+
+    .ad7-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fb923c;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .ad7-h {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.3rem, 2.8vw, 2.1rem);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .ad7-h em {
+      font-style: normal;
+      color: #fb923c;
+    }
+
+    .ad7-stats {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .ad7-sn {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.03em;
+      color: #fb923c;
+    }
+
+    .ad7-sl {
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.36);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .ad7-btn {
+      display: inline-block;
+      background: #fb923c;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 100px;
+    }
+
+    /* ── AD 8: Ninja – Lifestyle ── */
+    .ad8 {
+      aspect-ratio: 4/5;
+      background: #faf4ec;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+
+    .ad8-top {
+      background: linear-gradient(140deg, #170800, #2a1200);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad8-glow {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.22) 0%, transparent 70%);
+      right: -28px;
+      top: -28px;
+    }
+
+    .ad8-brand {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.32);
+    }
+
+    .ad8-plate {
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #261200, #160800);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 8px rgba(251, 146, 60, 0.07), 0 0 0 16px rgba(251, 146, 60, 0.04);
+      position: relative;
+      z-index: 2;
+    }
+
+    .ad8-foods {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      width: 62px;
+      justify-content: center;
+    }
+
+    .ad8-food {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    .f1 {
+      background: linear-gradient(135deg, #f4a261, #e76f51);
+    }
+
+    .f2 {
+      background: linear-gradient(135deg, #a8d8a8, #52b788);
+    }
+
+    .f3 {
+      background: linear-gradient(135deg, #ffd166, #f4a261);
+    }
+
+    .f4 {
+      background: linear-gradient(135deg, #e76f51, #c1121f);
+    }
+
+    .f5 {
+      background: linear-gradient(135deg, #f4e285, #f4a261);
+    }
+
+    .f6 {
+      background: linear-gradient(135deg, #c8e6c9, #81c784);
+    }
+
+    .ad8-bot {
+      background: #faf4ec;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .ad8-bl {
+      font-size: 0.62rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .ad8-bh {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(0.9rem, 2vw, 1.22rem);
+      letter-spacing: -0.03em;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+
+    .ad8-bs {
+      font-size: 0.68rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    .ad8-btn {
+      background: #fb923c;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* ── AD 9: AirPods – Clean white ── */
+    .ad9 {
+      aspect-ratio: 1;
+      background: #eeeeee;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad9-bg {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.008));
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ad9-in {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 26px;
+    }
+
+    .ad9-case {
+      width: 92px;
+      height: 74px;
+      background: linear-gradient(145deg, #fff, #e6e6e6);
+      border-radius: 17px;
+      margin: 0 auto 6px;
+      position: relative;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.13), 0 3px 6px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    }
+
+    .ad9-lid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: linear-gradient(180deg, #fff, #e8e8e8);
+      border-radius: 17px 17px 0 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .ad9-pod {
+      position: absolute;
+      bottom: 7px;
+      width: 17px;
+      height: 30px;
+      background: linear-gradient(180deg, #fff, #e8e8e8);
+      border-radius: 8px 8px 10px 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .ad9-pl {
+      left: 16px;
+    }
+
+    .ad9-pr {
+      right: 16px;
+    }
+
+    .ad9-led {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 2px;
+      border-radius: 2px;
+      background: #f4a500;
+      box-shadow: 0 0 5px rgba(244, 165, 0, 0.7);
+    }
+
+    .ad9-lbl {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 3px;
+    }
+
+    .ad9-h {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      letter-spacing: -0.05em;
+      line-height: 1.04;
+      color: #111;
+      margin-bottom: 11px;
+    }
+
+    .ad9-feats {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 17px;
+    }
+
+    .ad9-fv {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: -0.03em;
+      color: #111;
+    }
+
+    .ad9-fn {
+      font-size: 0.58rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .ad9-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+    }
+
+    .ad9-price {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.04em;
+      color: #111;
+    }
+
+    .ad9-btn {
+      background: #111;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 100px;
+    }
+
+    /* ── AD 10: AirPods – Dark immersive ── */
+    .ad10 {
+      aspect-ratio: 4/5;
+      background: linear-gradient(180deg, #050508 0%, #090918 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad10-rings {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .ad10-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(79, 156, 249, 0.1);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ad10-r1 {
+      width: 160px;
+      height: 160px;
+    }
+
+    .ad10-r2 {
+      width: 260px;
+      height: 260px;
+      border-color: rgba(79, 156, 249, 0.06);
+    }
+
+    .ad10-r3 {
+      width: 360px;
+      height: 360px;
+      border-color: rgba(79, 156, 249, 0.035);
+    }
+
+    .ad10-top {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .ad10-ey {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 5px;
+    }
+
+    .ad10-model {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      letter-spacing: -0.05em;
+      color: #fff;
+      line-height: 1.0;
+    }
+
+    .ad10-model em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .ad10-pod-vis {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 26px;
+    }
+
+    .ad10-pod {
+      width: 32px;
+      height: 60px;
+      background: linear-gradient(180deg, #1c1c1c, #111);
+      border-radius: 9px 9px 14px 14px;
+      position: relative;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.055);
+      margin: 0 auto;
+    }
+
+    .ad10-pod::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 6px;
+      width: 8px;
+      height: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent);
+      border-radius: 4px;
+    }
+
+    .ad10-dot {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 8px rgba(79, 156, 249, 0.8);
+    }
+
+    .ad10-feats {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      width: 100%;
+      margin-bottom: 22px;
+    }
+
+    .ad10-fr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.055);
+    }
+
+    .ad10-fl {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    .ad10-fv {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #fff;
+    }
+
+    .ad10-cta {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+    }
+
+    .ad10-pl {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 9px;
+    }
+
+    .ad10-pl strong {
+      color: #fff;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .ad10-btn {
+      display: block;
+      background: linear-gradient(135deg, var(--blue), #2563eb);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 13px;
+      border-radius: 100px;
+      text-align: center;
+    }
+
+    /* ─── WHY US GRID ─── */
+    .why-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      margin-top: 56px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .why-card {
+      background: var(--bg3);
+      padding: 36px 32px;
+      transition: background 0.2s;
+    }
+
+    .why-card:hover {
+      background: #202020;
+    }
+
+    .why-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .ic-blue {
+      background: var(--blue-bg);
+    }
+
+    .ic-violet {
+      background: var(--violet-bg);
+    }
+
+    .ic-yellow {
+      background: var(--yellow-bg);
+    }
+
+    .ic-green {
+      background: rgba(74, 222, 128, 0.1);
+    }
+
+    .why-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 9px;
+    }
+
+    .why-body {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ─── COMPARISON ─── */
+    .compare-section {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      margin-top: 56px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .compare-col {
+      background: var(--bg3);
+      padding: 32px 26px;
+    }
+
+    .compare-col.featured {
+      background: var(--white);
+      color: var(--bg);
+    }
+
+    .compare-col-name {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .compare-col-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.55;
+    }
+
+    .compare-col.featured .compare-col-sub {
+      color: rgba(14, 14, 14, 0.55);
+    }
+
+    .compare-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .compare-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .compare-col.featured .compare-row {
+      color: rgba(14, 14, 14, 0.7);
+    }
+
+    .cr-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.58rem;
+      flex-shrink: 0;
+    }
+
+    .cr-yes {
+      background: #4ade80;
+      color: #0a2a15;
+    }
+
+    .cr-no {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--muted);
+    }
+
+    .compare-col.featured .cr-no {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .compare-label-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .pill-us {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid rgba(79, 156, 249, 0.25);
+    }
+
+    /* ─── PROCESS ─── */
+    .process-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      margin-top: 56px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .process-card {
+      background: var(--bg3);
+      padding: 36px 28px;
+    }
+
+    .process-num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      letter-spacing: -0.06em;
+      color: rgba(255, 255, 255, 0.07);
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+
+    .process-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .process-body {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .process-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 11px;
+      border-radius: 100px;
+    }
+
+    /* ─── PRICING ─── */
+    .pricing-section {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 56px;
+    }
+
+    .plan {
+      background: var(--bg3);
+      padding: 48px 40px;
+      position: relative;
+    }
+
+    .plan.feat {
+      background: var(--white);
+      color: var(--bg);
+    }
+
+    .plan-popular {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .plan-tier {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 20px;
+    }
+
+    .plan-price {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 3.5rem;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .plan-per {
+      font-size: 0.8rem;
+      opacity: 0.4;
+      margin-bottom: 28px;
+    }
+
+    .plan-desc {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      opacity: 0.55;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+    }
+
+    .plan:not(.feat) .plan-desc {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .plan.feat .plan-desc {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      margin-bottom: 36px;
+    }
+
+    .plan-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.875rem;
+    }
+
+    .chk {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.56rem;
+      color: var(--bg);
+      background: var(--blue);
+    }
+
+    .plan.feat .chk {
+      background: var(--bg);
+      color: var(--white);
+    }
+
+    .plan-btn {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .plan:not(.feat) .plan-btn {
+      background: var(--white);
+      color: var(--bg);
+    }
+
+    .plan:not(.feat) .plan-btn:hover {
+      opacity: 0.85;
+    }
+
+    .plan.feat .plan-btn {
+      background: var(--bg);
+      color: var(--white);
+    }
+
+    .plan.feat .plan-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testi-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      margin-top: 56px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .tcard {
+      background: var(--bg3);
+      padding: 36px 30px;
+    }
+
+    .tcard-stars {
+      font-size: 0.75rem;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 18px;
+    }
+
+    .tcard-q {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: rgba(242, 242, 240, 0.72);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .tcard-auth {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .tcard-av {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 0.78rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .tcard-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .tcard-role {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ─── FAQ ─── */
+    .faq-section {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .faq-list {
+      margin-top: 56px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 28px;
+      cursor: pointer;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+      user-select: none;
+      gap: 18px;
+      transition: background 0.2s;
+    }
+
+    .faq-q:hover {
+      background: var(--bg2);
+    }
+
+    .faq-ico {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: transform 0.25s, color 0.2s;
+    }
+
+    .faq-item.open .faq-ico {
+      transform: rotate(45deg);
+      color: var(--blue);
+    }
+
+    .faq-a {
+      display: none;
+      padding: 0 28px 22px;
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .faq-item.open .faq-a {
+      display: block;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 100px 48px;
+      text-align: center;
+    }
+
+    .cta-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .cta-pills {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .cta-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+
+    .cta-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5.5vw, 5rem);
+      letter-spacing: -0.045em;
+      line-height: 0.97;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 40px;
+      line-height: 1.75;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-main {
+      background: var(--white);
+      color: var(--bg);
+      padding: 15px 30px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .btn-cta-main:hover {
+      opacity: 0.85;
+    }
+
+    .btn-cta-ghost {
+      color: var(--muted);
+      padding: 15px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      transition: all 0.2s;
+    }
+
+    .btn-cta-ghost:hover {
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 48px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .footer-brand {}
+
+    .footer-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .footer-logo span {
+      color: var(--blue);
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-col-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(242, 242, 240, 0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-bottom {
+      padding: 20px 48px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .fi {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fi.v {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav {
+        padding: 18px 28px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 72px 28px 60px;
+      }
+
+      .section {
+        padding: 80px 28px;
+      }
+
+      .work-header-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .compare-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .process-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .testi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ads-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .footer-bottom {
+        padding: 16px 28px;
+      }
+
+      .cta-section {
+        padding: 80px 28px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+
+      .pill-tag {
+        font-size: 1.5rem;
+        padding: 3px 14px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .cta-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Dash<span>.</span>Campaigns</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="https://cal.com/olumide-olaseni/discovery-call" class="nav-cta" target="_blank">Book a call</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag fi">
+      <span class="hero-tag-dot"></span>
+      Now taking clients — March 2026
+    </div>
+    <h1 class="fi">Performance Design<br>for Brands &amp; Agencies.</h1>
+    <div class="hero-pills fi">
+      <span class="pill-tag pill-blue">Landing Pages</span>
+      <span class="pill-tag pill-yellow">Ad Creatives</span>
+      <span class="pill-tag pill-violet">Emails &amp; more</span>
+    </div>
+    <p class="hero-sub fi">Stop choosing between speed, brand consistency, and performance. Get large creative
+      deliveries every week — built for ecom brands scaling on Meta and TikTok.</p>
+    <div class="hero-actions fi">
+      <a href="https://cal.com/olumide-olaseni/discovery-call" class="btn-primary" target="_blank">Book a call →</a>
+      <a href="#work" class="btn-ghost">See the work</a>
+    </div>
+    <div class="hero-social fi">
+      <div class="rating-faces">
+        <div class="rating-face rf1">AF</div>
+        <div class="rating-face rf2">BA</div>
+        <div class="rating-face rf3">SO</div>
+        <div class="rating-face rf4">TA</div>
+      </div>
+      <div class="rating-text"><strong>5/5 rating</strong> from 20+ brands</div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item"><span>Meta Ads</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>TikTok Creatives</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Landing Pages</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Email Campaigns</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Klaviyo Templates</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Product Pages</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>A/B Test Assets</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>ROAS-Optimized Creative</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>UGC-Style Ads</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Meta Ads</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>TikTok Creatives</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Landing Pages</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Email Campaigns</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Klaviyo Templates</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>Product Pages</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>A/B Test Assets</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>ROAS-Optimized Creative</span><span class="marquee-sep"></span></span>
+      <span class="marquee-item"><span>UGC-Style Ads</span><span class="marquee-sep"></span></span>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section class="work-section section" id="work">
+    <div class="section-inner">
+      <div class="work-header-grid fi">
+        <div>
+          <div class="section-label">Get a glimpse of our work</div>
+          <h2 class="section-title">Creatives we've made.</h2>
+        </div>
+        <p class="section-sub">Every ad below is built around direct-response principles — the right hook, visual
+          hierarchy, and CTA. This is the standard output your brand receives across all trending ecom categories.</p>
+      </div>
+
+      <!-- 01 MIGHTY PATCH -->
+      <div class="product-row">
+        <div class="product-meta fi">
+          <span class="meta-num">01 / 05</span>
+          <span class="meta-name">Mighty Patch™ — Hero Cosmetics</span>
+          <span class="meta-cat cat-green">Skincare</span>
+        </div>
+        <div class="ads-grid">
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Static Ad</span><span class="ad-plat plat-blue">Meta / IG Feed</span>
+            <div class="ad1">
+              <div class="ad1-glow"></div>
+              <div class="ad1-in">
+                <div class="ad1-ey">Dermatologist Approved</div>
+                <div class="ad1-patch">
+                  <div class="ad1-pt">HYDRO<br>COLLOID</div>
+                </div>
+                <div class="ad1-h">Zap it.<br>Overnight.</div>
+                <div class="ad1-s">No picking. No scarring.<br>36 patches for $13.</div>
+                <div class="ad1-btn">Shop Now →</div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Before / After</span><span class="ad-plat plat-violet">Meta / FB</span>
+            <div class="ad2">
+              <div class="ad2-split">
+                <div class="ad2-b">
+                  <div class="skin-b"></div>
+                  <div class="ba-lbl">Before</div>
+                </div>
+                <div class="ad2-a">
+                  <div class="skin-a"></div>
+                  <div class="ba-lbl">Morning After</div>
+                </div>
+                <div class="ad2-div">
+                  <div class="ad2-vc">VS</div>
+                </div>
+              </div>
+              <div class="ad2-bot">
+                <div class="ad2-bt">One Patch.<br>One Night. Done.</div>
+                <div class="ad2-bb">Try Mighty Patch →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 THE ORDINARY -->
+      <div class="product-row">
+        <div class="product-meta fi">
+          <span class="meta-num">02 / 05</span>
+          <span class="meta-name">Hyaluronic Acid 2% + B5 — The Ordinary</span>
+          <span class="meta-cat cat-violet">Beauty</span>
+        </div>
+        <div class="ads-grid">
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Editorial Split</span><span class="ad-plat plat-blue">IG Feed</span>
+            <div class="ad3">
+              <div class="ad3-l">
+                <div class="ad3-bot">
+                  <div class="ad3-cap"></div>
+                  <div class="ad3-bl">THE<br>ORDINARY<br>HA 2%+B5</div>
+                </div>
+                <div class="ad3-h">Skin that<br>drinks deep.</div>
+                <div class="ad3-s">Multi-depth hydration<br>in one serum.</div>
+              </div>
+              <div class="ad3-r">
+                <div class="ad3-bdg">
+                  <div class="ad3-bdgt">CLEAN<br>FORMULA</div>
+                </div>
+                <div class="ad3-ingr">
+                  <div class="ad3-i"><span class="ad3-id"></span>Hyaluronic Acid 2%</div>
+                  <div class="ad3-i"><span class="ad3-id"></span>Pro-Vitamin B5</div>
+                  <div class="ad3-i"><span class="ad3-id"></span>Vegetable Glycerin</div>
+                  <div class="ad3-i"><span class="ad3-id"></span>Allantoin</div>
+                </div>
+                <div>
+                  <div class="ad3-price">$8<span style="font-size:0.6rem;font-weight:400;color:#888"> /30ml</span></div>
+                  <div class="ad3-buy">Add to Cart</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Story Format</span><span class="ad-plat plat-violet">IG Stories</span>
+            <div class="ad4">
+              <div class="ad4-glow"></div>
+              <div class="ad4-brand">The Ordinary</div>
+              <div class="ad4-bwrap">
+                <div class="ad4-bottle">
+                  <div class="ad4-bcap"></div>
+                  <div class="ad4-blt">HA 2%<br>+ B5</div>
+                  <div class="ad4-shine"></div>
+                </div>
+              </div>
+              <div class="ad4-stars">★★★★★</div>
+              <div class="ad4-h">Plump.<br><span>Hydrated.</span><br>Glowing.</div>
+              <div class="ad4-s">200k+ 5-star reviews. Science-backed. Wallet-friendly.</div>
+              <div class="ad4-btn">Shop for $8 →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 STANLEY -->
+      <div class="product-row">
+        <div class="product-meta fi">
+          <span class="meta-num">03 / 05</span>
+          <span class="meta-name">Quencher H2.0 — Stanley</span>
+          <span class="meta-cat cat-green">Lifestyle</span>
+        </div>
+        <div class="ads-grid">
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Product Hero</span><span class="ad-plat plat-blue">Meta Feed</span>
+            <div class="ad5">
+              <div class="ad5-r ad5-r1"></div>
+              <div class="ad5-r ad5-r2"></div>
+              <div class="ad5-top">
+                <div class="ad5-br">Stanley 1913</div>
+                <div class="ad5-h">Stay Cold.<br>Stay <em>Bold.</em></div>
+              </div>
+              <div class="ad5-cup">
+                <div class="ad5-cb"></div>
+              </div>
+              <div class="ad5-bot">
+                <div class="ad5-fs">
+                  <div class="ad5-f"><span class="ad5-fd"></span>Cold 2 days. Hot 7 hours.</div>
+                  <div class="ad5-f"><span class="ad5-fd"></span>BPA-free + dishwasher safe</div>
+                  <div class="ad5-f"><span class="ad5-fd"></span>40oz — 12 colorways</div>
+                </div>
+                <div class="ad5-row">
+                  <div class="ad5-price">$35</div>
+                  <div class="ad5-btn">Shop Now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">TikTok Native</span><span class="ad-plat plat-yellow">TikTok</span>
+            <div class="ad6">
+              <div class="ad6-stripe"></div>
+              <div class="ad6-cnt">
+                <div class="ad6-hook">Your hydration era starts with <em>the right cup.</em></div>
+                <div class="ad6-cups">
+                  <div class="ad6-c c1"></div>
+                  <div class="ad6-c c2"></div>
+                  <div class="ad6-c c3"></div>
+                </div>
+                <div class="ad6-bot">
+                  <div class="ad6-sub">12 colors. One obsession.</div>
+                  <div class="ad6-big">Stanley Quencher 40oz</div>
+                  <div class="ad6-row">
+                    <div class="ad6-btn">Shop $35 →</div>
+                    <div class="ad6-btn2">↗</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 NINJA -->
+      <div class="product-row">
+        <div class="product-meta fi">
+          <span class="meta-num">04 / 05</span>
+          <span class="meta-name">AF101 Air Fryer — Ninja</span>
+          <span class="meta-cat cat-orange">Kitchen</span>
+        </div>
+        <div class="ads-grid">
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Product Dark</span><span class="ad-plat plat-yellow">Meta Feed</span>
+            <div class="ad7">
+              <div class="ad7-grid"></div>
+              <div class="ad7-glow"></div>
+              <div class="ad7-fryer">
+                <div class="ad7-body">
+                  <div class="ad7-brand">NINJA</div>
+                </div>
+                <div class="ad7-handle"></div>
+                <div class="ad7-drawer">
+                  <div class="ad7-pull"></div>
+                </div>
+              </div>
+              <div class="ad7-cnt">
+                <div class="ad7-tag">Kitchen Game-Changer</div>
+                <div class="ad7-h">Crispy<br><em>in minutes.</em><br>No guilt.</div>
+                <div class="ad7-stats">
+                  <div>
+                    <div class="ad7-sn">75%</div>
+                    <div class="ad7-sl">Less Oil</div>
+                  </div>
+                  <div>
+                    <div class="ad7-sn">4qt</div>
+                    <div class="ad7-sl">Capacity</div>
+                  </div>
+                </div>
+                <div class="ad7-btn">Shop $99 →</div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Lifestyle</span><span class="ad-plat plat-blue">FB + IG</span>
+            <div class="ad8">
+              <div class="ad8-top">
+                <div class="ad8-glow"></div>
+                <div class="ad8-brand">Ninja Kitchen</div>
+                <div class="ad8-plate">
+                  <div class="ad8-foods">
+                    <div class="ad8-food f1"></div>
+                    <div class="ad8-food f2"></div>
+                    <div class="ad8-food f3"></div>
+                    <div class="ad8-food f4"></div>
+                    <div class="ad8-food f5"></div>
+                    <div class="ad8-food f6"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="ad8-bot">
+                <div>
+                  <div class="ad8-bl">What's for dinner?</div>
+                  <div class="ad8-bh">Everything.<br>Under 20 mins.</div>
+                  <div class="ad8-bs">Ninja AF101 — $99</div>
+                </div>
+                <div class="ad8-btn">Buy Now →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 AIRPODS -->
+      <div class="product-row">
+        <div class="product-meta fi">
+          <span class="meta-num">05 / 05</span>
+          <span class="meta-name">AirPods 4 with ANC — Apple</span>
+          <span class="meta-cat cat-blue">Electronics</span>
+        </div>
+        <div class="ads-grid">
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Minimal Clean</span><span class="ad-plat plat-blue">IG Feed</span>
+            <div class="ad9">
+              <div class="ad9-bg"></div>
+              <div class="ad9-in">
+                <div class="ad9-lbl">Apple AirPods 4</div>
+                <div class="ad9-case">
+                  <div class="ad9-lid"></div>
+                  <div class="ad9-pod ad9-pl"></div>
+                  <div class="ad9-pod ad9-pr"></div>
+                  <div class="ad9-led"></div>
+                </div>
+                <div style="height:8px"></div>
+                <div class="ad9-h">Hear less.<br>Feel more.</div>
+                <div class="ad9-feats">
+                  <div>
+                    <div class="ad9-fv">ANC</div>
+                    <div class="ad9-fn">Cancel</div>
+                  </div>
+                  <div>
+                    <div class="ad9-fv">30hr</div>
+                    <div class="ad9-fn">Battery</div>
+                  </div>
+                  <div>
+                    <div class="ad9-fv">H2</div>
+                    <div class="ad9-fn">Chip</div>
+                  </div>
+                </div>
+                <div class="ad9-row">
+                  <div class="ad9-price">$129</div>
+                  <div class="ad9-btn">Buy Now →</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-frame fi">
+            <div class="ad-overlay"></div>
+            <span class="ad-chip">Dark Immersive</span><span class="ad-plat plat-violet">TikTok + Stories</span>
+            <div class="ad10">
+              <div class="ad10-rings">
+                <div class="ad10-ring ad10-r1"></div>
+                <div class="ad10-ring ad10-r2"></div>
+                <div class="ad10-ring ad10-r3"></div>
+              </div>
+              <div class="ad10-top">
+                <div class="ad10-ey">Now Available</div>
+                <div class="ad10-model">AirPods <em>4</em></div>
+              </div>
+              <div class="ad10-pod-vis">
+                <div class="ad10-pod">
+                  <div class="ad10-dot"></div>
+                </div>
+              </div>
+              <div class="ad10-feats">
+                <div class="ad10-fr"><span class="ad10-fl">Active Noise Cancellation</span><span class="ad10-fv">On
+                    ✓</span></div>
+                <div class="ad10-fr"><span class="ad10-fl">Battery Life</span><span class="ad10-fv">30 Hours</span>
+                </div>
+                <div class="ad10-fr"><span class="ad10-fl">Spatial Audio</span><span class="ad10-fv">Personalized</span>
+                </div>
+              </div>
+              <div class="ad10-cta">
+                <div class="ad10-pl">Starting at <strong>$129</strong></div>
+                <div class="ad10-btn">Shop AirPods 4 →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-section section" id="why">
+    <div class="section-inner">
+      <div class="fi">
+        <div class="section-label">Reasons why brands choose us</div>
+        <h2 class="section-title">Built different.<br>Built for performance.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card fi">
+          <div class="why-icon ic-blue">🚀</div>
+          <div class="why-title">Daily design deliveries</div>
+          <div class="why-body">1–3 fresh assets every day. Test while we build. Your ad account never runs dry.</div>
+        </div>
+        <div class="why-card fi">
+          <div class="why-icon ic-yellow">⚡</div>
+          <div class="why-title">Fast turnarounds</div>
+          <div class="why-body">First batch in 24 hours. Full revision cycles in 1–2 days. Always on time, never missed.
+          </div>
+        </div>
+        <div class="why-card fi">
+          <div class="why-icon ic-violet">🎯</div>
+          <div class="why-title">Conversion-first design</div>
+          <div class="why-body">Every asset is built around hooks, hierarchy, and CTAs — not just pretty. Performance is
+            the brief.</div>
+        </div>
+        <div class="why-card fi">
+          <div class="why-icon ic-green">📈</div>
+          <div class="why-title">Scalable output</div>
+          <div class="why-body">Up to 15 concepts a week. Our capacity scales with your ad spend — no bottlenecks.</div>
+        </div>
+        <div class="why-card fi">
+          <div class="why-icon ic-blue">🧩</div>
+          <div class="why-title">We do it all</div>
+          <div class="why-body">Ads, emails, landing pages, product pages — every asset type your ecom brand needs.
+          </div>
+        </div>
+        <div class="why-card fi">
+          <div class="why-icon ic-yellow">🔓</div>
+          <div class="why-title">No contracts</div>
+          <div class="why-body">Pause or cancel any time. Month-to-month — we earn your loyalty by delivering results.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="compare-section section">
+    <div class="section-inner">
+      <div class="fi">
+        <div class="section-label">Comparative</div>
+        <h2 class="section-title">See the difference.</h2>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-col featured fi">
+          <div class="compare-label-pill pill-us">✦ DashCampaigns</div>
+          <div class="compare-col-name" style="color:var(--bg)">DashCampaigns</div>
+          <div class="compare-col-sub">Scalable, fast, conversion-focused design — subscription model.</div>
+          <div class="compare-rows">
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Speed</div>
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Flexibility</div>
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Quality</div>
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Scalability</div>
+          </div>
+        </div>
+        <div class="compare-col fi">
+          <div class="compare-col-name">In-house team</div>
+          <div class="compare-col-sub">In-house teams often lack the specific ad design skill and can't scale fast.
+          </div>
+          <div class="compare-rows">
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Speed</div>
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Flexibility</div>
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Quality</div>
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Scalability</div>
+          </div>
+        </div>
+        <div class="compare-col fi">
+          <div class="compare-col-name">Creative agencies</div>
+          <div class="compare-col-sub">Full-scale agencies are slow, expensive, and built for big campaigns — not daily
+            testing.</div>
+          <div class="compare-rows">
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Speed</div>
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Flexibility</div>
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Quality</div>
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Scalability</div>
+          </div>
+        </div>
+        <div class="compare-col fi">
+          <div class="compare-col-name">Freelancers</div>
+          <div class="compare-col-sub">Unreliable, inconsistent, and impossible to scale when volume increases.</div>
+          <div class="compare-rows">
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Speed</div>
+            <div class="compare-row"><span class="cr-dot cr-yes">✓</span>Flexibility</div>
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Quality</div>
+            <div class="compare-row"><span class="cr-dot cr-no">✗</span>Scalability</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section section">
+    <div class="section-inner">
+      <div class="fi">
+        <div class="section-label">Hassle-free ad creation starts here</div>
+        <h2 class="section-title">Live in your ad account<br>within 48 hours.</h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-card fi">
+          <div class="process-num">01</div>
+          <div class="process-title">Strategy Call</div>
+          <div class="process-body">Hop on a free 30-min consultation. We align on brand, goals, audience, and creative
+            roadmap.</div>
+          <span class="process-tag pill-blue">Day 0</span>
+        </div>
+        <div class="process-card fi">
+          <div class="process-num">02</div>
+          <div class="process-title">Onboard</div>
+          <div class="process-body">Send logos, product photos, and brand assets. We set up your Trello workspace —
+            asset collection takes 1 day.</div>
+          <span class="process-tag pill-violet">Day 1</span>
+        </div>
+        <div class="process-card fi">
+          <div class="process-num">03</div>
+          <div class="process-title">First Batch Drops</div>
+          <div class="process-body">Within 24 hours your first creatives are ready to test. 1–3 fresh assets drop daily
+            while we iterate.</div>
+          <span class="process-tag pill-yellow">Day 2</span>
+        </div>
+        <div class="process-card fi">
+          <div class="process-num">04</div>
+          <div class="process-title">Test, Learn, Scale</div>
+          <div class="process-body">Revisions in 1–2 days. We double down on winning angles and keep the pipeline full
+            so your algorithm never starves.</div>
+          <span class="process-tag"
+            style="background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.2);">Ongoing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section section" id="pricing">
+    <div class="section-inner">
+      <div class="fi">
+        <div class="section-label">Unlock creative plans for every need</div>
+        <h2 class="section-title">One flat rate.<br>Unlimited creative momentum.</h2>
+      </div>
+      <div class="pricing-grid">
+        <div class="plan fi">
+          <div class="plan-tier">Launch</div>
+          <div class="plan-price">$997</div>
+          <div class="plan-per">/ month</div>
+          <div class="plan-desc">Best for brands scaling paid ads who need a reliable creative pipeline without agency
+            overhead or lock-in.</div>
+          <ul class="plan-list">
+            <li><span class="chk">✓</span>Up to 10 concepts/week</li>
+            <li><span class="chk">✓</span>Meta & TikTok static + animated ads</li>
+            <li><span class="chk">✓</span>Ad copywriting included</li>
+            <li><span class="chk">✓</span>1–2 day revisions</li>
+            <li><span class="chk">✓</span>All formats & sizes</li>
+            <li><span class="chk">✓</span>Trello project board</li>
+            <li><span class="chk">✓</span>Pause or cancel anytime</li>
+          </ul>
+          <a href="https://dashcampaigns.lemonsqueezy.com/checkout/buy/9b27ba00-39b0-40e9-a09e-2c761912528c?discount=0"
+            class="plan-btn" target="_blank">Book a call →</a>
+        </div>
+        <div class="plan feat fi">
+          <div class="plan-popular">Most Popular</div>
+          <div class="plan-tier">Growth Engine</div>
+          <div class="plan-price">$1,697</div>
+          <div class="plan-per">/ month</div>
+          <div class="plan-desc">Best for scaling brands that need maximum output — ads, landing pages, and email all
+            running at once.</div>
+          <ul class="plan-list">
+            <li><span class="chk">✓</span>Up to 15 concepts/week</li>
+            <li><span class="chk">✓</span>Everything in Launch</li>
+            <li><span class="chk">✓</span>Landing page design & dev (Framer)</li>
+            <li><span class="chk">✓</span>Email campaign templates (Klaviyo)</li>
+            <li><span class="chk">✓</span>Product page & store assets</li>
+            <li><span class="chk">✓</span>Priority 24hr turnaround</li>
+            <li><span class="chk">✓</span>Pause or cancel anytime</li>
+          </ul>
+          <a href="https://dashcampaigns.lemonsqueezy.com/checkout/buy/7d7f45a9-9b62-4557-a580-f395f792e35c?discount=0"
+            class="plan-btn" target="_blank">Book a call →</a>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:24px;font-size:0.82rem;color:var(--muted)">Running an ecom agency? <a
+          href="https://cal.com/olumide-olaseni/discovery-call" style="color:var(--blue);text-decoration:none"
+          target="_blank">Book a call for white-label pricing →</a></p>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi-section section">
+    <div class="section-inner">
+      <div class="fi">
+        <div class="section-label">Hear it from those who know us best</div>
+        <h2 class="section-title">Brands that moved fast<br>and won.</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="tcard fi">
+          <div class="tcard-stars">★★★★★</div>
+          <p class="tcard-q">"The constant flow of fresh creatives changed everything. Assets kept coming — we hit sales
+            in week one. It's like having a design co-founder who never sleeps."</p>
+          <div class="tcard-auth">
+            <div class="tcard-av">AF</div>
+            <div>
+              <div class="tcard-name">Abiola Folorunso</div>
+              <div class="tcard-role">Founder, Trollie</div>
+            </div>
+          </div>
+        </div>
+        <div class="tcard fi">
+          <div class="tcard-stars">★★★★★</div>
+          <p class="tcard-q">"Daily collaboration turned rough ideas into visuals that tell our brand story perfectly.
+            Revisions were lightning-fast and the work resonates hard with our audience."</p>
+          <div class="tcard-auth">
+            <div class="tcard-av">BA</div>
+            <div>
+              <div class="tcard-name">Bayo Ayodele</div>
+              <div class="tcard-role">Founder, Rise System Specs</div>
+            </div>
+          </div>
+        </div>
+        <div class="tcard fi">
+          <div class="tcard-stars">★★★★★</div>
+          <p class="tcard-q">"The speed is unmatched. You need this if you're running paid traffic. Our ad account
+            finally has the creative volume to properly test and scale winners."</p>
+          <div class="tcard-auth">
+            <div class="tcard-av">SO</div>
+            <div>
+              <div class="tcard-name">Sanusi Olamide</div>
+              <div class="tcard-role">Co-Founder, Layer99</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section section" id="faq">
+    <div class="section-inner">
+      <div class="faq-wrap fi">
+        <div class="section-label">You asked. We answered.</div>
+        <h2 class="section-title">Find everything you need<br>to know.</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does it work exactly?<span
+                class="faq-ico">+</span></div>
+            <div class="faq-a">Once you subscribe, we hop on a 30-min kickoff call to align on brand, goals, and
+              creative direction. From day one, 1–3 fresh assets drop daily — ads, emails, landing pages. You review,
+              give feedback in Trello, and revisions come back in 1–2 days. You can start testing live assets within 48
+              hours of signing up.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why not just use freelancers?<span
+                class="faq-ico">+</span></div>
+            <div class="faq-a">Freelancers may not be available, have inconsistent turnarounds, limited access to
+              premium software, and can't scale. More needs means more freelancers — which means inconsistent quality.
+              We offer a scalable design solution with consistent lead times and heavy investment in the latest tools.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">We have in-house designers
+              already.<span class="faq-ico">+</span></div>
+            <div class="faq-a">Brand designers shouldn't design your ads — ad design is a specific, performance-driven
+              skill they typically lack. They should focus on higher-level creative tasks. We can deliver more output
+              than in-house designers at a fraction of the cost, with the tools and processes to scale marketing
+              materials fast.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Which platforms do you design
+              for?<span class="faq-ico">+</span></div>
+            <div class="faq-a">Primarily Meta (Facebook/Instagram) and TikTok for ads. Email is designed for Klaviyo.
+              Landing pages are built in Framer. We deliver all platform sizes and formats — static, animated, stories,
+              feeds, everything.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you work with ecom
+              agencies?<span class="faq-ico">+</span></div>
+            <div class="faq-a">Yes — white-label partnerships available. We design under your agency's brand so your
+              clients see a seamless experience. Book a call to discuss custom volume pricing.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I pause or cancel?<span
+                class="faq-ico">+</span></div>
+            <div class="faq-a">Yes. Pause any time and resume when ready. Cancel before your next billing cycle — no
+              contracts, no penalties, no lock-in.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner fi">
+      <div class="cta-pills">
+        <span class="cta-pill pill-blue">Ad creatives</span>
+        <span class="cta-pill pill-yellow">Landing pages</span>
+        <span class="cta-pill pill-violet">Email designs</span>
+      </div>
+      <div class="cta-title">Let's Create Ads That Convert!</div>
+      <p class="cta-sub">Your competitors are testing creatives daily. Get a dedicated design partner that ships on
+        autopilot — starting tomorrow.</p>
+      <div class="cta-btns">
+        <a href="https://cal.com/olumide-olaseni/discovery-call" class="btn-cta-main" target="_blank">Book a call →</a>
+        <a href="#pricing" class="btn-cta-ghost">See plans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a href="#" class="footer-logo">Dash<span>.</span>Campaigns</a>
+      <div class="footer-tagline">Ad creatives, landing pages, emails — we do it all.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#work">Ad designs</a></li>
+        <li><a href="#work">Landing pages</a></li>
+        <li><a href="#work">Email campaigns</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="https://cal.com/olumide-olaseni/discovery-call" target="_blank">Book a call</a></li>
+        <li><a href="mailto:olumideolaseni060@gmail.com">Email us</a></li>
+        <li><a href="#pricing">Our plans</a></li>
+        <li><a href="#faq">FAQs</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2026 DashCampaigns</span>
+    <span>Performance Design for Ecom Brands</span>
+  </div>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+  </script>
+</body>
+
+</html>
