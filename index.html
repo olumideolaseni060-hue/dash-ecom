@@ -415,39 +415,50 @@
       display: none;
     }
 
-    /* ─── SCROLL GALLERY ─── */
+    /* ─── SCROLL GALLERY (marquee-style) ─── */
     .work-scroll-gallery {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      grid-auto-flow: column;
-      grid-auto-columns: 320px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 0 48px 16px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      margin-left: calc(-48px);
-      margin-right: calc(-48px);
-      width: calc(100% + 96px);
     }
 
-    .work-scroll-gallery::-webkit-scrollbar {
-      height: 6px;
+    .work-row-track {
+      display: flex;
+      gap: 12px;
+      width: max-content;
     }
 
-    .work-scroll-gallery::-webkit-scrollbar-track {
-      background: var(--bg3);
-      border-radius: 3px;
+    .work-row-track.row1 {
+      animation: workMarquee 40s linear infinite;
     }
 
-    .work-scroll-gallery::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 3px;
+    .work-row-track.row2 {
+      animation: workMarqueeReverse 40s linear infinite;
     }
 
-    .work-scroll-gallery::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.25);
+    .work-scroll-gallery:hover .work-row-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes workMarquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes workMarqueeReverse {
+      from {
+        transform: translateX(-50%);
+      }
+
+      to {
+        transform: translateX(0);
+      }
     }
 
     .ads-grid {
@@ -459,10 +470,10 @@
       overflow: hidden;
       cursor: pointer;
       background: var(--bg2);
+      min-width: 320px;
       width: 320px;
       height: 320px;
       border-radius: 12px;
-      scroll-snap-align: start;
       flex-shrink: 0;
     }
 
@@ -3470,6 +3481,43 @@
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
     }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
     document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+    // Work gallery: split ad-frames into 2 auto-scrolling rows
+    (function () {
+      const gallery = document.querySelector('.work-scroll-gallery');
+      if (!gallery) return;
+
+      // Collect all ad-frame elements
+      const frames = Array.from(gallery.querySelectorAll('.ad-frame'));
+      if (frames.length === 0) return;
+
+      // Split into two groups: odd-indexed in row1, even-indexed in row2
+      const row1Items = frames.filter((_, i) => i % 2 === 0);
+      const row2Items = frames.filter((_, i) => i % 2 === 1);
+
+      // Clear the gallery
+      gallery.innerHTML = '';
+
+      // Create row tracks with duplicated content for seamless loop
+      function createTrack(items, className) {
+        const track = document.createElement('div');
+        track.className = 'work-row-track ' + className;
+        // Original items
+        items.forEach(item => {
+          item.classList.remove('fi'); // remove fade-in class so they appear immediately
+          track.appendChild(item);
+        });
+        // Duplicate items for seamless loop
+        items.forEach(item => {
+          const clone = item.cloneNode(true);
+          track.appendChild(clone);
+        });
+        return track;
+      }
+
+      gallery.appendChild(createTrack(row1Items, 'row1'));
+      gallery.appendChild(createTrack(row2Items, 'row2'));
+    })();
   </script>
 </body>
 
